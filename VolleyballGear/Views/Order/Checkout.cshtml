@@ -1,0 +1,115 @@
+﻿@model VolleyballGear.Models.Order.OrderCreateVM
+
+@{
+    ViewData["Title"] = "Checkout";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/ShoppingCart.css" asp-append-version="true" />
+}
+
+@if (Model.OrderProducts == null || !Model.OrderProducts.Any())
+{
+        <div class="empty-state">
+            <h2>Your cart is empty</h2>
+            <p>Add some products before placing an order!</p>
+            <br>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary">Browse Products</a>
+        </div>
+}
+else
+{
+        <div class="cart-container">
+            <h1 style="color: var(--secondary); margin-bottom: 2rem;">Checkout - Order Summary</h1>
+
+            <div class="checkout-info-box">
+                <h3 style="color: var(--secondary); margin-bottom: 1rem;">📋 Review Your Order</h3>
+                <p style="color: #666;">Please review your items before placing the order.</p>
+            </div>
+
+
+        <form asp-controller="Order" asp-action="PlaceOrder" method="post">
+        @for (int i = 0; i < Model.OrderProducts.Count; i++)
+        {
+                    <div class="cart-item">
+                        <div class="cart-item-image">
+                    @if (!string.IsNullOrEmpty(Model.OrderProducts[i].Pic))
+                    {
+                                    <img src="@Model.OrderProducts[i].Pic" alt="@Model.OrderProducts[i].ProductName" />
+                    }
+                    else
+                    {
+                                    <div style="font-size: 3rem;">🏐</div>
+                    }
+                        </div>
+                        <div class="cart-item-info">
+                            <h3>@Model.OrderProducts[i].ProductName</h3>
+                            <p style="color: var(--primary); font-weight: bold;">
+                        @Model.OrderProducts[i].Price lv. × @Model.OrderProducts[i].Quantity
+                            </p>
+                    @if (Model.OrderProducts[i].Discount > 0)
+                    {
+                                    <span class="discount-badge">Discount: @Model.OrderProducts[i].Discount%</span>
+                    }
+                        </div>
+                        <div>
+                    @{
+                        var priceValue = decimal.Parse(Model.OrderProducts[i].Price);
+                            var discounted = Model.OrderProducts[i].Discount > 0 ? priceValue - (priceValue * (Model.OrderProducts[i].Discount / 100)) : priceValue;
+                        var itemTotal = discounted * Model.OrderProducts[i].Quantity;
+                    }
+                            <p style="font-weight: bold; font-size: 1.3rem;">@itemTotal.ToString("F2") lv.</p>
+                        </div>
+                    </div>
+
+                    <input asp-for="@Model.OrderProducts[i].ProductId" hidden/>
+                        <input asp-for="@Model.OrderProducts[i].ProductName" hidden />
+                        <input asp-for="@Model.OrderProducts[i].Price" hidden />
+                        <input asp-for="@Model.OrderProducts[i].Discount" hidden />
+                        <input asp-for="@Model.OrderProducts[i].Quantity" hidden />
+                    
+        }
+
+            <div class="cart-summary">
+                <div class="summary-row total">
+                    <span>Total Amount:</span>
+                    <span>@Model.TotalPrice.ToString("F2") lv.</span>
+                </div>
+
+                    <button type="submit" class="btn btn-success btn-block" style="margin-top: 1rem;">✓ Confirm & Place Order</button>
+                    
+                        
+
+                </form>
+
+
+                <a asp-controller="ShoppingCart" asp-action="Index" class="btn btn-secondary btn-block" style="margin-top: 0.5rem;">Back to Cart</a>
+            </div>
+}
+
+<style>
+.checkout-info-box {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.1), rgba(247, 184, 1, 0.1));
+    border-left: 4px solid var(--primary);
+    padding: 1.5rem;
+    border-radius: 10px;
+    margin-bottom: 2rem;
+}
+
+.discount-badge {
+    background: var(--success);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

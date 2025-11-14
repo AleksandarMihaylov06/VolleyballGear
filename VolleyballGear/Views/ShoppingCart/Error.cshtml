@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Success.css" asp-append-version="true" />
+}
+
+<div class="success-container" style="border: 3px solid var(--danger);">
+    <div class="success-icon" style="background: linear-gradient(135deg, var(--danger), #c82333);">✗</div>
+    <h1 style="color: var(--danger);">Oops! Something went wrong</h1>
+    <p>@(TempData["ErrorMessage"] ?? "We couldn't complete your request. Please try again.")</p>
+    
+    <div class="success-actions">
+        <a asp-controller="ShoppingCart" asp-action="Index" class="btn btn-primary">Back to Cart</a>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Continue Shopping</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Go to Home</a>
+    </div>
+</div>

@@ -1,0 +1,87 @@
+﻿@model VolleyballGear.Models.Product.ProductDeleteVM
+@{
+    ViewData["Title"] = "Delete Product";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ProductDetails.css" asp-append-version="true" />
+}
+
+<div class="delete-container">
+    <h1>Delete Product</h1>
+    
+    <div class="delete-warning">
+        <h3>⚠️ Are you sure you want to delete this product?</h3>
+        <p>This action cannot be undone.</p>
+    </div>
+    
+    <div class="product-detail-grid">
+        <div class="product-detail-image">
+            <img src="@Model.Picture" alt="@Model.ProductName" />
+        </div>
+        <div class="product-detail-info">
+            <h2>@Model.ProductName</h2>
+            <div class="detail-row">
+                <div class="detail-label">Brand</div>
+                <div class="detail-value">@Model.BrandName</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Category</div>
+                <div class="detail-value">@Model.CategoryName</div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Price</div>
+                <div class="detail-value">
+                    @if (Model.HasDiscount)
+                    {
+                        <span>@Model.PriceWithDiscount</span>
+                    }
+                    else
+                    {
+                        <span>@Model.Price</span>
+                    }
+                </div>
+            </div>
+            <div class="detail-row">
+                <div class="detail-label">Stock</div>
+                <div class="detail-value">@Model.Quantity units</div>
+            </div>
+        </div>
+    </div>
+    
+    <form method="post" asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-danger">Delete Product</button>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.delete-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    max-width: 900px;
+    margin: 0 auto;
+}
+
+.delete-warning {
+    background: #fff3cd;
+    border-left: 4px solid var(--warning);
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    border-radius: 8px;
+}
+
+.delete-warning h3 {
+    color: #856404;
+    margin-bottom: 0.5rem;
+}
+
+.delete-warning p {
+    color: #856404;
+    margin: 0;
+}
+</style>

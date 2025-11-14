@@ -1,0 +1,84 @@
+﻿@model IEnumerable<VolleyballGear.Models.Order.OrderIndexVM>
+
+@{
+    ViewData["Title"] = "All Orders";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/Orders.css" asp-append-version="true" />
+}
+
+<div class="orders-table">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="color: var(--secondary);">All Orders</h1>
+        @if (User.IsInRole("Administrator"))
+        {
+                <a asp-controller="Product" asp-action="Index" class="btn btn-success">+ Create New Order</a>
+        }
+    </div>
+
+    @if (!Model.Any())
+    {
+            <div class="empty-state">
+                <div style="font-size: 5rem;">📦</div>
+                <h2 style="color: var(--secondary);">No orders found</h2>
+                <p style="color: var(--secondary);">Orders will appear here once customers start placing them.</p>
+            </div>
+    }
+    else
+    {
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Customer</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var order in Model)
+                {
+                            <tr>
+                                <td><strong>#@order.OrderId</strong></td>
+                                <td>@order.UserName</td>
+                                <td>@order.OrderDate.ToString("MM/dd/yyyy HH:mm")</td>
+                                <td>@order.OrderProducts.Count products</td>
+                                <td>@order.TotalPrice.ToString("F2") lv.</td>
+                                <td>
+                            @if (order.Status == VolleyballGear.Data.Domain.OrderStatus.Pending)
+                            {
+                                             <span class="status-badge status-pending">Pending</span>
+                            }
+                            else if (order.Status == VolleyballGear.Data.Domain.OrderStatus.Cancelled)
+                            {
+                                            <span class="status-badge status-cancelled">Cancelled</span>
+                            }
+                            else if (order.Status == VolleyballGear.Data.Domain.OrderStatus.Completed)
+                            {
+                                            <span class="status-badge status-delivered">Completed</span>
+                            }
+                                </td>
+                                <td>
+                                    <a asp-controller="Order" asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary btn-sm">Details</a>
+
+                            @if (order.Status == VolleyballGear.Data.Domain.OrderStatus.Pending)
+                            {
+                                            <a asp-controller="Order" asp-action="ManageStatus" asp-route-id="@order.OrderId" class="btn btn-danger btn-sm">Status</a>
+                            }
+                                </td>
+                            </tr>
+                }
+                </tbody>
+            </table>
+    }
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

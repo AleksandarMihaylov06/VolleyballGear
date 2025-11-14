@@ -1,0 +1,147 @@
+﻿@model VolleyballGear.Models.Order.OrderDetailsVM
+
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/Orders.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/ShoppingCart.css" asp-append-version="true" />
+}
+
+<div class="cart-container">
+    <h1 style="color: var(--secondary); margin-bottom: 1rem;">Order #@Model.OrderId</h1>
+    <p style="color: #666; margin-bottom: 2rem;">
+        Ordered on @Model.OrderDate.ToString("MMMM dd, yyyy") at @Model.OrderDate.ToString("hh:mm tt")
+    </p>
+
+    <div class="order-status">
+        <strong>Status:</strong>
+       <td>
+    @if (Model.Status == VolleyballGear.Data.Domain.OrderStatus.Pending)
+    {
+        <span class="status-badge status-pending">Pending</span>
+    }
+    else if (Model.Status == VolleyballGear.Data.Domain.OrderStatus.Completed)
+    {
+        <span class="status-badge status-delivered">Completed</span>
+    }
+            else if (Model.Status == VolleyballGear.Data.Domain.OrderStatus.Cancelled)
+    {
+        <span class="status-badge status-cancelled">Cancelled</span>
+    }
+</td>
+
+    </div>
+
+    @foreach (var item in Model.OrderProducts)
+    {
+            <div class="cart-item">
+                <div class="cart-item-image">
+                @if (!string.IsNullOrEmpty(item.Pic))
+                {
+                            <img src="@item.Pic" alt="@item.ProductName" />
+                }
+                else
+                {
+                            <div style="font-size: 3rem;">🏐</div>
+                }
+                </div>
+                <div class="cart-item-info">
+                    <h3>@item.ProductName</h3>
+                    <p style="color: var(--primary); font-weight: bold;">
+                    @item.Price.ToString("F2") lv. × @item.Quantity
+                    </p>
+                </div>
+                <div>
+                @{
+                    var total = item.Price * item.Quantity;
+                }
+                    <p style="font-weight: bold; font-size: 1.3rem;">
+                    @total.ToString("F2") lv.
+                    </p>
+                </div>
+            </div>
+    }
+
+    <div class="cart-summary">
+        <div class="summary-row total">
+            <span>Total:</span>
+            <span>@Model.TotalPrice.ToString("F2") lv.</span>
+        </div>
+
+        <a asp-controller="Order" asp-action="MyOrders" class="btn btn-secondary btn-block" style="margin-top: 1rem;">Back to My Orders</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}
+
+
+
+
+
+
+
+@* @model VolleyballGear.Models.Order.OrderDetailsVM
+@{
+    ViewData["Title"] = "Order Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/ProductDetails.css" asp-append-version="true" />
+}
+
+<div class="details-container">
+    <h1>Order #@Model.OrderId</h1>
+
+    <div class="detail-row">
+        <div class="detail-label">Customer</div>
+        <div class="detail-value">@Model.UserEmail</div>
+    </div>
+
+    <div class="detail-row">
+        <div class="detail-label">Order Date</div>
+        <div class="detail-value">@Model.OrderDate.ToString("g")</div>
+    </div>
+
+    <div class="detail-row">
+        <div class="detail-label">Status</div>
+        <div class="detail-value">@(Model.Status ? "Completed" : "Pending")</div>
+    </div>
+
+    <div class="detail-row">
+        <div class="detail-label">Total</div>
+        <div class="detail-value">@Model.TotalPrice.ToString("f2") BGN</div>
+    </div>
+
+    <hr />
+
+    <h2>Ordered Products</h2>
+    <div class="product-detail-grid">
+        @foreach (var item in Model.OrderProducts)
+        {
+            <div class="product-detail-card">
+                <img src="@item.Pic" alt="@item.ProductName" class="product-image" />
+                <div class="product-info">
+                    <h3>@item.ProductName</h3>
+                    <p>Quantity: @item.Quantity</p>
+                    <p>Price (each): @item.Price.ToString("f2") BGN</p>
+                    <p>Subtotal: @(item.Price * item.Quantity).ToString("f2") BGN</p>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="form-actions">
+        <a asp-action="MyOrders" class="btn btn-secondary">Back to My Orders</a>
+        @if (User.IsInRole("Administrator"))
+        {
+            <a asp-action="Index" class="btn btn-warning">Back to All Orders</a>
+        }
+    </div>
+</div>
+ *@

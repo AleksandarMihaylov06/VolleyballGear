@@ -1,0 +1,134 @@
+﻿.cart-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 3rem;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 120px 1fr auto;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+}
+
+    .cart-item:last-of-type {
+        border-bottom: none;
+    }
+
+.cart-item-image {
+    width: 120px;
+    height: 120px;
+    border-radius: 10px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--secondary), var(--primary));
+}
+
+    .cart-item-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+.cart-item-info h3 {
+    color: var(--secondary);
+    margin-bottom: 0.5rem;
+    font-size: 1.3rem;
+}
+
+.cart-item-info p {
+    color: #666;
+    margin-bottom: 0.3rem;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    justify-content: center;
+}
+
+    .quantity-controls form {
+        margin: 0;
+    }
+
+    .quantity-controls button {
+        width: 35px;
+        height: 35px;
+        border-radius: 50%;
+        border: none;
+        background: var(--secondary);
+        color: white;
+        cursor: pointer;
+        font-size: 1.2rem;
+        font-weight: bold;
+        transition: all 0.3s;
+    }
+
+        .quantity-controls button:hover {
+            background: var(--primary);
+            transform: scale(1.1);
+        }
+
+    .quantity-controls span {
+        min-width: 40px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+    }
+
+.cart-summary {
+    background: var(--light);
+    padding: 2rem;
+    border-radius: 15px;
+    margin-top: 2rem;
+}
+
+.summary-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+}
+
+    .summary-row.total {
+        font-size: 1.5rem;
+        font-weight: bold;
+        color: var(--primary);
+        border-top: 2px solid #ddd;
+        padding-top: 1rem;
+        margin-top: 1rem;
+    }
+
+.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: white;
+}
+
+    .empty-state h2 {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+    }
+
+    .empty-state p {
+        font-size: 1.2rem;
+        opacity: 0.9;
+    }
+
+@media (max-width: 768px) {
+    .cart-item {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .cart-item-image {
+        margin: 0 auto;
+    }
+}

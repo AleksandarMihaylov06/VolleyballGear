@@ -1,0 +1,159 @@
+﻿@using VolleyballGear.Models.Brand
+@using VolleyballGear.Models.Category
+@model IEnumerable<VolleyballGear.Models.Product.ProductIndexVM>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/ProductIndex.css" asp-append-version="true" />
+}
+
+<div class="filters-container">
+    <div class="filters-header">
+        <h1>All Products</h1>
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
+        {
+                <a asp-controller="Product" asp-action="Create" class="btn btn-success">Create New</a>
+        }
+    </div>
+
+    <form asp-controller="Product" asp-action="Index" method="get" class="filters-form">
+        <!-- Search -->
+        <div class="filter-group">
+            <label>Search</label>
+            <input type="text"
+                   name="searchStringProductName"
+                   value="@ViewBag.SearchStringProductName"
+                   placeholder="Search by product name" />
+        </div>
+
+        <!-- Category -->
+        <div class="filter-group">
+            <label>Category</label>
+            <select name="searchStringCategoryName">
+                @{
+                    var selectedCategory = ViewBag.SelectedCategory as string;
+                    var categories = ViewBag.Categories as List<CategoryPairVM>;
+                }
+
+                <option value="">All Categories</option>
+                @foreach (var category in categories)
+                {
+                        <option value="@category.Name" selected="@(category.Name == selectedCategory)">
+                        @category.Name
+                        </option>
+                }
+            </select>
+        </div>
+
+        <!-- Brand -->
+        <div class="filter-group">
+            <label>Brand</label>
+            <select name="searchStringBrandName">
+                @{
+                    var selectedBrand = ViewBag.SelectedBrand as string;
+                    var brands = ViewBag.Brands as List<BrandPairVM>;
+                }
+
+                <option value="">All Brands</option>
+                @foreach (var brand in brands)
+                {
+                        <option value="@brand.Name" selected="@(brand.Name == selectedBrand)">
+                        @brand.Name
+                        </option>
+                }
+            </select>
+        </div>
+
+        @* <!-- Sort -->
+        <div class="filter-group">
+            <label>Sort By</label>
+            <select name="sortOption">
+                @{
+                    string selectedSort = ViewBag.SelectedSort as string ?? "name";
+                }
+                <option value="name" selected="@(selectedSort == "name")">Name</option>
+                <option value="price-low" selected="@(selectedSort == "price-low")">Price: Low to High</option>
+                <option value="price-high" selected="@(selectedSort == "price-high")">Price: High to Low</option>
+                <option value="popular" selected="@(selectedSort == "popular")">Most Popular</option>
+            </select>
+        </div>
+
+        <!-- Discount Checkbox -->
+        <div class="filter-group checkbox-group">
+            <label>
+                <input type="checkbox"
+                       name="hasDiscount"
+                       checked="@ViewBag.HasDiscount" />
+                PROMOTIONS
+            </label>
+        </div> *@
+
+        <!-- Filter Button -->
+        <div class="filter-group" style="margin-top:30px;">
+            <button type="submit" class="btn btn-primary">Filter</button>
+        </div>
+    </form>
+</div>
+
+<!-- PRODUCT GRID -->
+<div class="product-container">
+    @foreach (var item in Model)
+    {
+            <div class="product-card" onclick="location.href='@Url.Action("Details", "Product", new { id = item.Id })'">
+                <img src="@item.Picture" alt="@item.ProductName">
+                <hr />
+                <div class="product-info">
+                    <h3>@item.ProductName</h3>
+                    <p><strong>Brand:</strong> @item.BrandName</p>
+                    <p><strong>Category:</strong> @item.CategoryName</p>
+                    <p><strong>Quantity:</strong> @item.Quantity</p>  
+
+                @if (item.HasDiscount)
+                {
+                            <div class="price-section">
+                                <strong>Price:</strong>
+                                <span class="original-price">@item.Price lv.</span>
+                                <span class="discount-price">@item.PriceWithDiscount lv.</span>
+                            </div>
+                            <p><strong>Discount: </strong>@item.Discount%</p>
+                }
+                else
+                {
+                            <div class="price-section">
+                                <strong>Price:</strong>
+                                <span class="regular-price">@item.Price lv.</span>
+                            </div>
+                }
+
+                @if (User.Identity.IsAuthenticated)
+                {
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                <form asp-controller="ShoppingCart" asp-action="Add" method="post" asp-route-productId="@item.Id" style="display:inline;">
+                    <button type="submit" class="btn btn-warning text-white">Add To Cart</button>
+                </form>
+                    }
+                    else
+                    {
+                <a asp-controller="Account" asp-action="Login" class="btn btn-secondary text-white">Login to Add</a>
+                    }
+                }
+                else
+                {
+                    <button type="button"
+                        class="btn btn-secondary text-white"
+                        onclick="event.stopPropagation(); openLoginModal();">
+                    Login to Add
+                    </button>
+                }
+                </div>
+            </div>
+    }
+</div>
+
+@section Scripts {
+    @await Html.PartialAsync("_ValidationScriptsPartial")
+}

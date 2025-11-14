@@ -1,0 +1,19 @@
+﻿@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/ShoppingCart.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/EmptyIndex.css" asp-append-version="true" />
+}
+
+<div class="empty-state">
+    <div class="empty-icon">🛒</div>
+    <h2>Your cart is empty</h2>
+    <p>Looks like you haven't added any items to your cart yet.</p>
+    <p style="color: #ccc; margin-top: 1rem; font-size: 1rem;">
+        Start exploring our volleyball gear and add some amazing products!
+    </p>
+    <br>
+    <a asp-controller="Product" asp-action="Index" class="btn btn-primary btn-lg">Start Shopping</a>
+</div>

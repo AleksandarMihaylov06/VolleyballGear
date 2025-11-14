@@ -1,0 +1,43 @@
+﻿.empty-state {
+    text-align: center;
+    padding: 4rem 2rem;
+    color: white;
+    min-height: 60vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.empty-icon {
+    font-size: 8rem;
+    margin-bottom: 1.5rem;
+    animation: bounce 2s infinite;
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-20px);
+    }
+}
+
+.empty-state h2 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.empty-state p {
+    font-size: 1.2rem;
+    opacity: 0.9;
+}
+
+.btn-lg {
+    padding: 1.2rem 3rem;
+    font-size: 1.2rem;
+    margin-top: 1rem;
+}

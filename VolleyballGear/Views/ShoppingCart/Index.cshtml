@@ -1,0 +1,105 @@
+﻿@model VolleyballGear.Models.ShoppingCart.ShoppingCartIndexVM
+@{
+    ViewData["Title"] = "Shopping Cart";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/ShoppingCart.css" asp-append-version="true" />
+}
+
+<div class="cart-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1 style="color: var(--secondary);">Shopping Cart</h1>
+        <a asp-controller="ShoppingCart" asp-action="ClearCart" class="btn btn-danger" onclick="return confirm('Are you sure you want to clear your cart?');">Clear Cart</a>
+    </div>
+
+    @foreach (var item in Model.Products)
+    {
+            <div class="cart-item">
+                <div class="cart-item-image">
+                @if (!string.IsNullOrEmpty(item.Picture))
+                {
+                            <img src="@item.Picture" alt="@item.ProductName" />
+                }
+                else
+                {
+                            <div style="font-size: 3rem;">🏐</div>
+                }
+                </div>
+                <div class="cart-item-info">
+                    <h3>@item.ProductName</h3>
+                    <p style="color: var(--primary); font-weight: bold; font-size: 1.1rem;">
+                    @item.ProductPrice lv. each
+                    </p>
+                @if (item.HasDiscount)
+                {
+                            <span class="discount-badge">Discounted</span>
+                }
+                </div>
+                <div>
+                    <div class="quantity-controls">
+                        <a asp-controller="ShoppingCart" asp-action="Edit" asp-route-productId="@item.ProductId" asp-route-quantity="-1" class="quantity-btn">-</a>
+                        <span>@item.Quantity</span>
+                        <a asp-controller="ShoppingCart" asp-action="Edit" asp-route-productId="@item.ProductId" asp-route-quantity="1" class="quantity-btn">+</a>
+                    </div>
+                    <p style="text-align: center; margin-top: 1rem; font-weight: bold; font-size: 1.2rem;">
+                    @{
+                        var priceValue = decimal.Parse(item.ProductPrice);
+                        var itemTotal = priceValue * item.Quantity;
+                    }
+                    @itemTotal.ToString("F2") lv.
+                    </p>
+                    <a asp-controller="ShoppingCart" asp-action="RemoveProduct" asp-route-productId="@item.ProductId" class="btn btn-danger btn-sm btn-block" style="margin-top: 1rem;" onclick="return confirm('Remove this item from cart?');">Remove</a>
+                </div>
+            </div>
+    }
+
+    <div class="cart-summary">
+        <div class="summary-row total">
+            <span>Total:</span>
+            <span>@Model.TotalPrice lv.</span>
+        </div>
+        <a asp-controller="Order" asp-action="Checkout" class="btn btn-primary btn-block" style="margin-top: 1rem;">Proceed to Checkout</a>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary btn-block" style="margin-top: 0.5rem;">Continue Shopping</a>
+    </div>
+</div>
+
+<style>
+.discount-badge {
+    background: var(--success);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    display: inline-block;
+    margin-top: 0.5rem;
+}
+
+.quantity-btn {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    background: var(--secondary);
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.quantity-btn:hover {
+    background: var(--primary);
+    transform: scale(1.1);
+    color: white;
+}
+</style>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

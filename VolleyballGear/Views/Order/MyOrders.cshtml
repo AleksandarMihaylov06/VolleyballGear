@@ -1,0 +1,75 @@
+﻿@model IEnumerable<VolleyballGear.Models.Order.OrderIndexVM>
+
+@{
+    ViewData["Title"] = "My Orders";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/Orders.css" asp-append-version="true" />
+}
+
+@if (!Model.Any())
+{
+        <div class="empty-state">
+            <div style="font-size: 6rem; margin-bottom: 1rem;">📦</div>
+            <h2>No orders yet</h2>
+            <p>Start shopping to see your orders here!</p>
+            <br>
+            <a asp-controller="Product" asp-action="Index" class="btn btn-primary">Browse Products</a>
+        </div>
+}
+else
+{
+        <div class="orders-table">
+            <h1 style="color: var(--secondary); margin-bottom: 2rem;">My Orders</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Order #</th>
+                        <th>Date</th>
+                        <th>Items</th>
+                        <th>Total Price</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                @foreach (var order in Model)
+                {
+                    <tr>
+                        <td><strong>#@order.OrderId</strong></td>
+                        <td>@order.OrderDate.ToString("MM/dd/yyyy")</td>
+                        <td>@order.OrderProducts.Count products</td>
+                        <td>@order.TotalPrice.ToString("F2") lv.</td>
+                                    <td>
+                                            @if (order.Status == VolleyballGear.Data.Domain.OrderStatus.Pending)
+                                            {
+                                                <span class="status-badge status-pending">Pending</span>
+                                            }
+                                            else if (order.Status == VolleyballGear.Data.Domain.OrderStatus.Completed)
+                                            {
+                                                <span class="status-badge status-delivered">Completed</span>
+                                            }
+                                            else if (order.Status == VolleyballGear.Data.Domain.OrderStatus.Cancelled)
+                                            {
+                                                <span class="status-badge status-cancelled">Cancelled</span>
+                                            }
+                                    </td>
+
+
+                                <td>
+                                    <a asp-controller="Order" asp-action="Details" asp-route-id="@order.OrderId" class="btn btn-primary btn-sm">View Details</a>
+
+                        </td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

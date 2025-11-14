@@ -1,0 +1,135 @@
+﻿<!-- Login Modal -->
+<div id="loginModal" class="auth-modal">
+    <div class="auth-modal-content">
+        <span class="auth-close" onclick="closeLoginModal()">&times;</span>
+        <h2>Login</h2>
+
+        <form method="post" asp-area="Identity" asp-page="/Account/Login" asp-route-returnUrl="@Url.Action("Index", "Home")" id="loginForm">
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="username" name="Input.UserName" class="form-control" required autocomplete="username" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="Input.Password" class="form-control" required autocomplete="current-password" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Login</button>
+        </form>
+
+        <p class="auth-switch">
+            Don't have an account? <a href="#" onclick="switchToRegister(); return false;">Register here</a>
+        </p>
+    </div>
+</div>
+
+<!-- Register Modal -->
+<div id="registerModal" class="auth-modal">
+    <div class="auth-modal-content">
+        <span class="auth-close" onclick="closeRegisterModal()">&times;</span>
+        <h2>Register</h2>
+
+        <form method="post" asp-area="Identity" asp-page="/Account/Register" asp-route-returnUrl="@Url.Action("Index", "Home")" id="registerForm">
+            <div class="form-group">
+                <label class="form-label">First Name</label>
+                <input type="text" name="Input.FirstName" class="form-control" required autocomplete="given-name" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Last Name</label>
+                <input type="text" name="Input.LastName" class="form-control" required autocomplete="family-name" />
+            </div>
+
+            @* <div class="form-group">
+                <label class="form-label">Address</label>
+                <input type="address" name="Input.Address" class="form-control" required autocomplete="address" />
+            </div> *@
+
+            <div class="form-group">
+                <label class="form-label">Email</label>
+                <input type="email" name="Input.Email" class="form-control" required autocomplete="username" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Username</label>
+                <input type="username" name="Input.UserName" class="form-control" required autocomplete="username" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Password</label>
+                <input type="password" name="Input.Password" class="form-control" required minlength="6" autocomplete="new-password" />
+            </div>
+
+            <div class="form-group">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" name="Input.ConfirmPassword" class="form-control" required minlength="6" autocomplete="new-password" />
+            </div>
+
+            <button type="submit" class="btn btn-primary btn-block">Register</button>
+        </form>
+
+        <p class="auth-switch">
+            Already have an account? <a href="#" onclick="switchToLogin(); return false;">Login here</a><br />
+            If you have typed everything, but it didn't log you in automaticly, then you have probably typed something wrong.
+        </p>
+    </div>
+</div>
+
+<script>
+function openLoginModal() {
+    document.getElementById('loginModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeLoginModal() {
+    document.getElementById('loginModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function openRegisterModal() {
+    document.getElementById('registerModal').style.display = 'block';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeRegisterModal() {
+    document.getElementById('registerModal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function switchToRegister() {
+    closeLoginModal();
+    openRegisterModal();
+}
+
+function switchToLogin() {
+    closeRegisterModal();
+    openLoginModal();
+}
+
+// Close modal when clicking outside
+// window.onclick = function(event) {
+//     const loginModal = document.getElementById('loginModal');
+//     const registerModal = document.getElementById('registerModal');
+
+//     if (event.target == loginModal) {
+//         closeLoginModal();
+//     }
+//     if (event.target == registerModal) {
+//         closeRegisterModal();
+//     }
+// }
+
+// Check for validation errors and reopen modal if needed
+document.addEventListener('DOMContentLoaded', function() {
+    const loginErrors = '@TempData["LoginError"]';
+    const registerErrors = '@TempData["RegisterError"]';
+
+    if (loginErrors && loginErrors !== '') {
+        openLoginModal();
+    }
+    if (registerErrors && registerErrors !== '') {
+        openRegisterModal();
+    }
+});
+</script>

@@ -1,0 +1,75 @@
+﻿@model VolleyballGear.Models.Product.ProductDetailsVM
+@{
+    ViewData["Title"] = "Product Details";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/ProductDetails.css" asp-append-version="true" />
+}
+
+<div class="details-container">
+    <div class="product-detail-grid">
+        <div class="product-detail-image">
+            <img src="@Model.Picture" alt="@Model.ProductName" />
+        </div>
+        <div class="product-detail-info">
+            <h1>@Model.ProductName</h1>
+
+            <div class="detail-row">
+                <div class="detail-label">Brand</div>
+                <div class="detail-value">@Model.BrandName</div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Category</div>
+                <div class="detail-value">
+                    <span class="product-category">@Model.CategoryName</span>
+                </div>
+            </div>
+
+            <div class="detail-row">
+                <div class="detail-label">Price</div>
+                <div class="detail-value">
+                    @if (Model.HasDiscount)
+                    {
+                            <span class="original-price">@Model.Price</span>
+                            <span class="discount-price">@Model.PriceWithDiscount</span>
+                    }
+                    else
+                    {
+                            <span class="discount-price">@Model.Price</span>
+                    }
+                </div>
+            </div>
+
+            @if (Model.HasDiscount)
+            {
+                    <div class="detail-row">
+                        <div class="detail-label">Discount</div>
+                        <div class="detail-value discount-badge">@Model.Discount% OFF</div>
+                    </div>
+            }
+
+            <div class="detail-row">
+                <div class="detail-label">Stock</div>
+                <div class="detail-value">@Model.Quantity units available</div>
+            </div>
+
+            @if (User.Identity.IsAuthenticated)
+            {
+                <form asp-controller="ShoppingCart" asp-action="Add" method="post" asp-route-productId="@Model.Id" style="display:inline;">
+                    <button type="submit" class="btn btn-warning text-white">Add To Cart</button>
+                </form>
+            }
+        </div>
+    </div>
+
+    <div class="form-actions">
+        @if (User.Identity.IsAuthenticated && User.IsInRole("Administrator"))
+        {
+                <a asp-controller="Product" asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+                <a asp-controller="Product" asp-action="Delete" asp-route-id="@Model.Id" class="btn btn-danger">Delete</a>
+        }
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Back to Products</a>
+    </div>
+</div>

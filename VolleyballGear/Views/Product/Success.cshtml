@@ -1,0 +1,18 @@
+﻿@{
+    ViewData["Title"] = "Success";
+}
+
+@section Styles {
+        <link rel="stylesheet" href="~/css/Success.css" asp-append-version="true" />
+}
+
+<div class="success-container">
+    <div class="success-icon">✓</div>
+    <h1>Success!</h1>
+    <p>@TempData["SuccessMessage"]</p>
+
+    <div class="success-actions">
+        <a asp-controller="Product" asp-action="Index" class="btn btn-primary">View All Products</a>
+        <a asp-controller="Home" asp-action="Index" class="btn btn-secondary">Go to Home</a>
+    </div>
+</div>

@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - VolleyGear</title>
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/layout.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/LoginModal.css" asp-append-version="true" />
+    @RenderSection("Styles", required: false)
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="volleyball-icon" style="left: 10%; top: 20%; animation-delay: 0s; font-size: 100px;">🏐</div>
+        <div class="volleyball-icon" style="left: 80%; top: 60%; animation-delay: 3s; font-size: 80px;">🏐</div>
+        <div class="volleyball-icon" style="left: 50%; top: 40%; animation-delay: 6s; font-size: 120px;">🏐</div>
+        <div class="volleyball-icon" style="left: 20%; top: 70%; animation-delay: 9s; font-size: 90px;">🏐</div>
+        <div class="volleyball-icon" style="left: 70%; top: 10%; animation-delay: 12s; font-size: 110px;">🏐</div>
+    </div>
+
+    <div class="layout">
+        <nav>
+    <div class="nav-content">
+        <div class="logo">
+            <a asp-controller="Home" asp-action="Index">🏐 VolleyGear</a>
+        </div>
+        <ul class="nav-links">
+            <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+            <partial name="_LoginPartial" />
+        </ul>
+    </div>
+</nav>
+
+<main id="main-content">
+            @RenderBody()
+</main>
+
+<!-- Add modals OUTSIDE the nav -->
+<partial name="_AuthModals" />
+
+<footer>
+    <p>&copy; 2025 VolleyGear. Premium Volleyball Equipment Store</p>
+    <p class="footer-links">
+        <a asp-controller="Home" asp-action="Privacy">Privacy Policy</a>
+    </p>
+</footer>
+
+    </div>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

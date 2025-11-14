@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Order Placed";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/Success.css" asp-append-version="true" />
+}
+
+<div class="success-container">
+    <div class="success-icon">✓</div>
+    <h1>Order Placed Successfully!</h1>
+    <p>Thank you for your order. We've received your request and will process it soon.</p>
+
+    @if (TempData["OrderId"] != null)
+    {
+        <div style="background: var(--light); padding: 1.5rem; border-radius: 10px; margin: 2rem 0;">
+            <p style="color: var(--secondary); font-size: 1.2rem; margin: 0;">
+                <strong>Order Number:</strong> #@TempData["OrderId"]
+            </p>
+        </div>
+    }
+
+    <div class="success-actions">
+        <a asp-controller="Order" asp-action="MyOrders" class="btn btn-primary">View My Orders</a>
+        <a asp-controller="Product" asp-action="Index" class="btn btn-secondary">Continue Shopping</a>
+    </div>
+</div>
